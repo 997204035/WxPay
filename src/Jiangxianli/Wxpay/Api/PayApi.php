@@ -30,12 +30,12 @@ Trait PayApi {
      *
      * 统一下单，WxPayUnifiedOrder中out_trade_no、body、total_fee、trade_type必填
      * appid、mchid、spbill_create_ip、nonce_str不需要填入
-     * @param WxPayDataBase $payData
+     * @param $payData
      * @param int $timeOut
      * @throws WxPayException
      * @return 成功时返回，其他抛异常
      */
-    public function unifiedorder(WxPayDataBase $payData,$timeOut=60){
+    public function unifiedorder($payData,$timeOut=60){
         $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         //检测必填参数
         if(!$payData->IsOut_trade_noSet()) {
