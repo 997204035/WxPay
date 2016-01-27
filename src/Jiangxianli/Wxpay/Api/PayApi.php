@@ -16,6 +16,8 @@ Trait PayApi {
 
     public $configs = [];
 
+    public $curl_timeout = 60;
+
 
     public function setConfig($configs=[]){
 
@@ -72,7 +74,7 @@ Trait PayApi {
 //        $startTimeStamp = $this->getMillisecond();//请求开始时间
         $response = $this->postXmlCurl($xml, $url, false, $timeOut);
         $result = WxPayResults::Init($response,$this->configs['key']);
-        //self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
+//        self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
 
         return $result;
 
@@ -95,10 +97,10 @@ Trait PayApi {
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
 
         //如果有配置代理这里就设置代理
-        if($this->configs['CURL_PROXY_HOST'] != "0.0.0.0"
-            && $this->configs['CURL_PROXY_PORT'] != 0){
-            curl_setopt($ch,CURLOPT_PROXY, $this->configs['CURL_PROXY_HOST']);
-            curl_setopt($ch,CURLOPT_PROXYPORT, $this->configs['CURL_PROXY_PORT']);
+        if(\Config::get('JWxPay::CURL_PROXY_HOST') != "0.0.0.0"
+            && \Config::get('JWxPay::CURL_PROXY_PORT') != 0){
+            curl_setopt($ch,CURLOPT_PROXY, \Config::get('JWxPay::CURL_PROXY_HOST'));
+            curl_setopt($ch,CURLOPT_PROXYPORT, \Config::get('JWxPay::CURL_PROXY_PORT'));
         }
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,TRUE);
@@ -112,9 +114,9 @@ Trait PayApi {
             //设置证书
             //使用证书：cert 与 key 分别属于两个.pem文件
             curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
-            curl_setopt($ch,CURLOPT_SSLCERT, $this->configs['SSLCERT_PATH']);
+            curl_setopt($ch,CURLOPT_SSLCERT, \Config::get('JWxPay::SSLCERT_PATH'));
             curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
-            curl_setopt($ch,CURLOPT_SSLKEY,$this->configs['SSLKEY_PATH']);
+            curl_setopt($ch,CURLOPT_SSLKEY,\Config::get('JWxPay::SSLKEY_PATH'));
         }
         //post提交方式
         curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -145,7 +147,8 @@ Trait PayApi {
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码
-            $baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].$_SERVER['QUERY_STRING']);
+            //$baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].$_SERVER['QUERY_STRING']);
+            $baseUrl = urlencode(\Request::getUri());
             $url = $this->__CreateOauthUrlForCode($baseUrl);
             Header("Location: $url");
             exit();
@@ -194,10 +197,10 @@ Trait PayApi {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        if($this->configs['CURL_PROXY_HOST'] != "0.0.0.0"
-            && $this->configs['CURL_PROXY_PORT'] != 0){
-            curl_setopt($ch,CURLOPT_PROXY, $this->configs['CURL_PROXY_HOST']);
-            curl_setopt($ch,CURLOPT_PROXYPORT, $this->configs['CURL_PROXY_PORT']);
+        if(\Config::get('JWxPay::CURL_PROXY_HOST') != "0.0.0.0"
+            && \Config::get('JWxPay::CURL_PROXY_PORT') != 0){
+            curl_setopt($ch,CURLOPT_PROXY, \Config::get('JWxPay::CURL_PROXY_HOST'));
+            curl_setopt($ch,CURLOPT_PROXYPORT, \Config::get('JWxPay::CURL_PROXY_PORT'));
         }
         //运行curl，结果以jason形式返回
         $res = curl_exec($ch);
@@ -274,6 +277,22 @@ Trait PayApi {
         $time2 = explode( ".", $time );
         $time = $time2[0];
         return $time;
+    }
+
+    /**
+     * 设置配置项目的默认值
+     * @param $key
+     * @param $default
+     */
+    public function setDefaultValue($key,$default){
+
+        if(!array_key_exists($key,$this->configs)){
+
+            return $default;
+        }
+
+        return $this->configs[$key];
+
     }
 
 

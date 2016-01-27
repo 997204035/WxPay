@@ -26,12 +26,12 @@ class JsApiPay {
         //②、统一下单
         $input  = new WxPayUnifiedOrder();
         $input->SetBody($this->configs['body']);
-        $input->SetAttach($this->configs['attach']);
+        $input->SetAttach($this->setDefaultValue('attach',''));
         $input->SetOut_trade_no($this->configs['out_trade_no'] );
         $input->SetTotal_fee($this->configs['total_fee']);
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
-        $input->SetGoods_tag($this->configs['goods_tag']);
+        $input->SetGoods_tag($this->setDefaultValue('goods_tag',''));
         $input->SetNotify_url($this->configs['notify_url']);
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
@@ -51,7 +51,7 @@ class JsApiPay {
          * 参考http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html）
          */
 
-        return View::make('JWxPay::jsApiPay',compact('jsApiParameters'))->render();
+        return \View::make('JWxPay::jsApiPay',compact('jsApiParameters'))->render();
 
     }
 
