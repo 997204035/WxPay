@@ -15,8 +15,9 @@ use Jiangxianli\Wxpay\Exception\WxPayException;
  * @author widyhu
  *
  */
-class WxPayResults extends WxPayDataBase
+class WxPayResults
 {
+    use WxPayDataBase;
     /**
      *
      * 检测签名

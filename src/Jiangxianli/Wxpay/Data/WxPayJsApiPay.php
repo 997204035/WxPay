@@ -15,8 +15,10 @@ namespace Jiangxianli\Wxpay\Data;
  * @author widyhu
  *
  */
-class WxPayJsApiPay extends WxPayDataBase
+class WxPayJsApiPay
 {
+    use WxPayDataBase;
+
     /**
      * 设置微信分配的公众账号ID
      * @param string $value

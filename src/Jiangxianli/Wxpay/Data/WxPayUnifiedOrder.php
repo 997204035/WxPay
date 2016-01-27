@@ -15,8 +15,10 @@ namespace Jiangxianli\Wxpay\Data;
  * @author widyhu
  *
  */
-class WxPayUnifiedOrder extends WxPayDataBase
+class WxPayUnifiedOrder
 {
+    use WxPayDataBase;
+
     /**
      * 设置微信分配的公众账号ID
      * @param string $value

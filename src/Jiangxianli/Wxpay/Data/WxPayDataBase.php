@@ -1,6 +1,8 @@
 <?php
 
 namespace Jiangxianli\Wxpay\Data;
+
+use Jiangxianli\Wxpay\Exception\WxPayException;
 /**
  *
  * 数据对象基础类，该类中定义数据类最基本的行为，包括：
@@ -8,7 +10,7 @@ namespace Jiangxianli\Wxpay\Data;
  * @author widyhu
  *
  */
-class WxPayDataBase
+Trait WxPayDataBase
 {
     protected $values = array();
 
