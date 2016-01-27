@@ -52,8 +52,12 @@ Trait PayApi {
         if($payData->GetTrade_type() == "JSAPI" && !$payData->IsOpenidSet()){
             throw new WxPayException("统一支付接口中，缺少必填参数openid！trade_type为JSAPI时，openid为必填参数！");
         }
+        if($payData->GetTrade_type() == "JSAPI" && !$payData->IsCallBackUrlSet()){
+            throw new WxPayException("统一支付接口中，缺少必填参数call_back_url！trade_type为JSAPI时，call_back_url为必填参数！");
+        }
+
         if($payData->GetTrade_type() == "NATIVE" && !$payData->IsProduct_idSet()){
-            throw new WxPayException("统一支付接口中，缺少必填参数product_id！trade_type为JSAPI时，product_id为必填参数！");
+            throw new WxPayException("统一支付接口中，缺少必填参数product_id！trade_type为NATIVE时，product_id为必填参数！");
         }
 
         //异步通知url未设置，则使用配置文件中的url

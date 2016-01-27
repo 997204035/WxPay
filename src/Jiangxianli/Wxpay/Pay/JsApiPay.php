@@ -33,6 +33,7 @@ class JsApiPay {
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag($this->setDefaultValue('goods_tag',''));
         $input->SetNotify_url($this->configs['notify_url']);
+        $input->SetCallBackUrl($this->configs['call_back_url']);
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order = $this->unifiedOrder($input);
@@ -51,7 +52,9 @@ class JsApiPay {
          * 参考http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html）
          */
 
-        return \View::make('JWxPay::jsApiPay',compact('jsApiParameters'))->render();
+        $callBackUrl = $input->GetCallBackUrl();
+
+        return \View::make('JWxPay::jsApiPay',compact('jsApiParameters','callBackUrl'))->render();
 
     }
 

@@ -482,4 +482,29 @@ class WxPayUnifiedOrder extends WxPayDataBase
     {
         return array_key_exists('openid', $this->values);
     }
+
+    /**
+     * 设置支付完成跳转Url
+     * @param string $value
+     **/
+    public function SetCallBackUrl($value)
+    {
+        $this->values['call_back_url'] = $value;
+    }
+    /**
+     * 获取支付完成跳转Url的值
+     * @return 值
+     **/
+    public function GetCallBackUrl()
+    {
+        return $this->values['call_back_url'];
+    }
+    /**
+     * 判断支付完成跳转Url是否存在
+     * @return true 或 false
+     **/
+    public function IsCallBackUrlSet()
+    {
+        return array_key_exists('call_back_url', $this->values);
+    }
 }
