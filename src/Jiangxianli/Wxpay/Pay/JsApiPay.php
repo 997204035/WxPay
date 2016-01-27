@@ -27,7 +27,7 @@ class JsApiPay {
         $input  = new WxPayUnifiedOrder();
         $input->SetBody($this->configs['body']);
         $input->SetAttach($this->configs['attach']);
-        $input->SetOut_trade_no($this->configs['mch_id'] . date("YmdHis"));
+        $input->SetOut_trade_no($this->configs['out_trade_no'] );
         $input->SetTotal_fee($this->configs['total_fee']);
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));

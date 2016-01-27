@@ -20,6 +20,8 @@ Trait PayApi {
     public function setConfig($configs=[]){
 
         $this->configs = array_merge(\Config::get('JWxpay::base'),$configs);
+
+        return $this;
     }
 
     /**
